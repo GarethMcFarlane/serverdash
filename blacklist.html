@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Server Status - Com Connect</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+
+
+  <!-- Firebase JS -->
+  <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <!--  Scripts-->
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+
+
+</head>
+
+
+<body>
+  <nav class="light-green lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Server Status</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="index.html">Backup</a></li>
+        <li class="active"><a href="#">Blacklist</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="index.html">Backup</a></li>
+        <li class="active"><a href="#">Blacklist</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <h4>Blacklist Status</h4>
+
+      <table id="blacklistTable" class="highlight">
+        <thead>
+          <th>Client</th>
+          <th>Mailserver</th>
+          <th>Status</th>
+          <th>Last check</th>
+        </thead>
+      </table> 
+
+      <div class="progress blacklistloader">
+        <div class="indeterminate"></div>
+      </div>
+
+
+
+      <script>
+      var alert = 0;
+      var apiUrl = 'https://mxtoolbox.com/api/v1/monitor/?tag=managed';
+      var apiKey = 'e4d15711-3c48-4d72-a182-4eca1c41deb9'; 
+      $.ajax({ 
+        url: apiUrl, 
+        type: 'Get', 
+        data: '{}',
+        dataType: 'json', 
+      success: function (result) { 
+        $(".blacklistloader").fadeOut("slow");
+        for (var client in result) {
+          var currentclient = result[client];
+
+          var rowClass = "class='light-green lighten-5'";
+          if (currentclient.StatusSummary != "Not Blacklisted") {
+            rowClass = "class='red lighten-5'";
+            alert++;
+          }
+
+
+          //Create a row for the client name.
+          var row = $("<tr " + rowClass + " />");
+          $("#blacklistTable").append(row);
+          row.append($("<td>" + currentclient.Name + "</td>"));
+          row.append($("<td>" + currentclient.ActionString + "</td>"));
+          row.append($("<td>" + currentclient.StatusSummary + "</td>"));
+          row.append($("<td>" + currentclient.LastChecked + "</td>"));
+        }
+      }, 
+      error: function (xhr, status, error) { 
+        //OnError
+      },
+      beforeSend: function (xhr) { 
+        if (apiKey) { 
+          xhr.setRequestHeader('Authorization', apiKey); 
+        } 
+      } 
+
+    });
+        //Warnings for failed backups.
+        if (alert == 1) {
+          Materialize.toast('Warning: 1 client on blacklist!', 4000);
+        } else if (alert > 1) {
+          Materialize.toast('Warning: ' + alert + ' clients on blacklists!', 4000);
+        } else {
+          Materialize.toast('No clients on blacklists!', 4000);
+        }
+      </script>
+    </div>
+  </div>
+
+
+
+
+
+
+
+</body>
+</html>

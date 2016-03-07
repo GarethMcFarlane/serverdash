@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Backup Status</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+
+
+  <!-- Firebase JS -->
+  <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+
+
+
+
+</head>
+
+
+<body>
+  <nav style="background-color: #96BC33;" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Server Dashboard</a>
+      <ul class="right hide-on-med-and-down">
+        <li class="active"><a href="#">Backup</a></li>
+        <li><a href="blacklist.html">Blacklist</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li class="active"><a href="#">Backup</a></li>
+        <li><a href="blacklist.html">Blacklist</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+
+      <h4>Backup Status</h4>
+
+      <table id="dataTable" class="highlight">
+        <thead>
+          <th>Client</th>
+          <th>Server</th>
+          <th>Backup Result</th>
+          <th>Backup Time</th>
+          <th>Backup Copies Available</th>
+        </thead>
+      </table> 
+
+      <div class="progress loader">
+        <div class="indeterminate"></div>
+      </div>
+
+      <script>
+      //Connect to Firebase instance
+      var myDataRef = new Firebase('https://boiling-fire-537.firebaseio.com');
+
+      var data;
+      var alert = 0;
+      myDataRef.on('child_added', function(snapshot) {
+        //Get the firebase data.
+        data = snapshot.val();
+        $(".loader").fadeOut("slow");
+
+
+        var clientid = 0;
+        //Begom iterating through clients in data.
+        for (var client in data) {
+          //Get the client name and it's child data.
+          var currentclientName = Object.keys(data)[clientid];
+          var currentclient = data[client];
+
+          //Create a row for the client name.
+          var row = $("<tr />");
+          $("#dataTable").append(row);
+          row.append($("<td>" + currentclientName + "</td>"));
+
+
+          var serverid = 0;
+          //Iterate through servers of the client.
+          for (var server in currentclient) {
+            //Get the server name and server data.
+            var currentserverName = Object.keys(currentclient)[serverid];
+            var currentserver = currentclient[server];
+
+            var resultMessage = "Successful";
+            var rowClass = "class='light-green lighten-5'";
+            if (currentserver.BackupResult != 0) {
+              resultMessage = "Error code: " + currentserver.BackupResult;
+              rowClass = "class='red lighten-5'";
+              alert++;
+            }
+            //Create row and add data to it.
+            var row = $("<tr " + rowClass + " />");
+            $("#dataTable").append(row);
+            row.append($("<td>" + "" + "</td>"));
+            row.append($("<td>" + currentserverName + "</td>"));
+            row.append($("<td>" + resultMessage + "</td>"));
+            row.append($("<td>" + currentserver.LastBackupTime + "</td>"));
+            row.append($("<td>" + currentserver.NumberOfCopies + "</td>"));
+
+            serverid++;
+          }
+          clientid++;
+        }
+        //Warnings for failed backups.
+        if (alert == 1) {
+          Materialize.toast('Warning: 1 Backup failed!', 4000);
+        } else if (alert > 1) {
+          Materialize.toast('Warning: ' + alert + ' Backups failed!', 4000);
+        } else {
+          Materialize.toast('All backups ran successfully!', 4000);
+        }
+      });
+
+</script>
+
+
+</div>
+</div>
+
+
+
+
+
+<!--  Scripts-->
+
+
+</body>
+</html>
