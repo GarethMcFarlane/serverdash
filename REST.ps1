@@ -10,7 +10,7 @@ Add-PSSnapin windows.serverbackup -ErrorAction SilentlyContinue
 # Get parameters
 $computerName = $env:COMPUTERNAME
 $domainName = $env:USERDOMAIN
-$result = 'Unable to view backup data'
+$result = 'No backup configured'
 $lastBackup = 'Never'
 $lastSummary = Get-WBSummary
 $backupCopies = 0

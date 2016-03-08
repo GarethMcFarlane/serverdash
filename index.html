@@ -31,11 +31,13 @@
       <ul class="right hide-on-med-and-down">
         <li class="active"><a href="#">Backup</a></li>
         <li><a href="blacklist.html">Blacklist</a></li>
+        <li><a href="logs.html">Logs</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
         <li class="active"><a href="#">Backup</a></li>
         <li><a href="blacklist.html">Blacklist</a></li>
+        <li><a href="logs.html">Logs</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -45,7 +47,7 @@
 
       <h4>Backup Status</h4>
 
-      <table id="dataTable" class="highlight">
+      <table id="dataTable" class="highlight" style="margin-bottom: 50px;">
         <thead>
           <th>Client</th>
           <th>Server</th>
@@ -92,16 +94,19 @@
             var currentserver = currentclient[server];
 
             var resultMessage = "Successful";
-            var rowClass = "class='light-green lighten-5'";
+            var rowClass = "class='light-green lighten-4'";
+            var icon = 'done';
+
             if (currentserver.BackupResult != 0) {
               resultMessage = "Error: " + currentserver.BackupResult;
-              rowClass = "class='red lighten-5'";
+              rowClass = "class='red lighten-4'";
               alert++;
+              icon = 'error_outline';
             }
             //Create row and add data to it.
             var row = $("<tr " + rowClass + " />");
             $("#dataTable").append(row);
-            row.append($("<td>" + "" + "</td>"));
+            row.append($("<td>" + "<i class='small material-icons'>" + icon + "</i>" + "</td>"));
             row.append($("<td>" + currentserverName + "</td>"));
             row.append($("<td>" + resultMessage + "</td>"));
             row.append($("<td>" + currentserver.LastBackupTime + "</td>"));
