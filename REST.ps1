@@ -40,6 +40,9 @@ $uri = "https://boiling-fire-537.firebaseio.com/servers/" + $domainName + "/" + 
 $json = $server | ConvertTo-Json
 $response = Invoke-RestMethod $uri -Method Put -Body $json -ContentType 'application/json'
 
+#Clear out old Logs
+$uri = "https://boiling-fire-537.firebaseio.com/servers/" + $domainName + "/" + $computerName + "/logs.json"
+$response = Invoke-RestMethod $uri -Method Delete
 
 
 $logs = @("Application", "System")
