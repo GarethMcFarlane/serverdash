@@ -13,7 +13,7 @@
 				type: "POST",
 				url: "https://gravityzone.bitdefender.com/api/v1.0/jsonrpc/reports",
 				dataType: 'json',
-				async: true,
+				async: false,
 				data: '{"id": "ajax-test","jsonrpc": "2.0","method": "getDownloadLinks","params": {"reportId": "5530c339bd132704498b4567"}}',
 				beforeSend: function (xhr) {
     				xhr.setRequestHeader ("Authorization", "Basic eDZXN2F3MExLaFZyaVo2YkQyRHZKTmJ3TlpVRnZRTlY6");
