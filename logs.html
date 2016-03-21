@@ -77,6 +77,7 @@
 
         var clientid = 0;
         //Begom iterating through clients in data.
+        var errorClass = "class='red lighten-4'";
         for (var client in data) {
 
           var currentclientName = Object.keys(data)[clientid];
@@ -85,6 +86,11 @@
           var row = $("<tr />");
           $("#logstable").append(row);
           row.append($("<td>" + currentclientName + "</td>"));
+          row.append($("<td></td>"));
+          row.append($("<td></td>"));
+          row.append($("<td></td>"));
+          row.append($("<td></td>"));
+          row.append($("<td></td>"));
 
           var serverid = 0;
           //Iterate through servers of the client.
@@ -97,6 +103,10 @@
             $("#logstable").append(row);
             row.append($("<td></td>"));
             row.append($("<td>" + currentserverName + "</td>"));
+            row.append($("<td></td>"));
+            row.append($("<td></td>"));
+            row.append($("<td></td>"));
+            row.append($("<td></td>"));
 
             //Loop through every log and output it.
             var sourceID = 0;
@@ -113,7 +123,13 @@
                 for (var log in currentType) {
                   var eventName = Object.keys(currentType)[logID];
                   var eventCount = currentType[log];
-                  var row = $("<tr />");
+                  if (currentTypeName == "Critical") {
+                    var row = $("<tr class='red lighten-4' />");
+                  } else if (currentTypeName == "Error"){
+                    var row = $("<tr class='orange lighten-2' />");
+                  } else {
+                    var row = $("<tr class='yellow lighten-2' />");
+                  }
                   $("#logstable").append(row);
                   row.append($("<td></td>"));
                   row.append($("<td></td>"));
