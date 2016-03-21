@@ -47,18 +47,94 @@
 
       <h4>Server Logs</h4>
 
-      <table class="highlight">
+      <table class="highlight" id="logstable">
         <thead>
           <td>Client</td>
           <td>Server</td>
-          <td>System</td>
-          <td>Application</td>
-          <td>Warning</td>
-          <td>Error</td>
-          <td>Critical</td>
+          <td>Event Name</td>
+          <td>Count</td>
+          <td>Source</td>
+          <td>Type</td>
         </thead>
       </table>
 
+      <div class="progress loader">
+        <div class="indeterminate"></div>
+      </div>
+
+      <script>
+
+
+      //Connect to Firebase instance
+      var myDataRef = new Firebase('https://boiling-fire-537.firebaseio.com');
+
+      var data;
+      var alert = 0;
+      myDataRef.on('child_added', function(snapshot) {
+        //Get the firebase data.
+        data = snapshot.val();
+        $(".loader").fadeOut("slow");
+
+        var clientid = 0;
+        //Begom iterating through clients in data.
+        for (var client in data) {
+
+          var currentclientName = Object.keys(data)[clientid];
+          var currentclient = data[client];
+
+          var row = $("<tr />");
+          $("#logstable").append(row);
+          row.append($("<td>" + currentclientName + "</td>"));
+
+          var serverid = 0;
+          //Iterate through servers of the client.
+          for (var server in currentclient) {
+            var currentserverName = Object.keys(currentclient)[serverid];
+            var currentserver = currentclient[server];
+            var logs = currentserver.logs;
+
+            var row = $("<tr />");
+            $("#logstable").append(row);
+            row.append($("<td></td>"));
+            row.append($("<td>" + currentserverName + "</td>"));
+
+            //Loop through every log and output it.
+            var sourceID = 0;
+            for (var source in logs) {
+              var currentSourceName = Object.keys(logs)[sourceID];
+              var currentSource = logs[source];
+              var typeID = 0;
+
+              for (var type in currentSource) {
+                var currentTypeName = Object.keys(currentSource)[typeID];
+                var currentType = currentSource[type];
+                var logID = 0;
+
+                for (var log in currentType) {
+                  var eventName = Object.keys(currentType)[logID];
+                  var eventCount = currentType[log];
+                  var row = $("<tr />");
+                  $("#logstable").append(row);
+                  row.append($("<td></td>"));
+                  row.append($("<td></td>"));
+                  row.append($("<td>" + eventName + "</td>"));
+                  row.append($("<td>" + eventCount + "</td>"));
+                  row.append($("<td>" + currentSourceName + "</td>"));
+                  row.append($("<td>" + currentTypeName + "</td>"));
+
+                  logID++;
+                }
+                typeID++;
+              }
+              sourceID++;
+            }
+            serverid++;
+          }
+          clientid++;
+        }
+      });
+
+    </script>
 
 
 
