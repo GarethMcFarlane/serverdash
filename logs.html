@@ -77,15 +77,17 @@
 
         var clientid = 0;
         //Begom iterating through clients in data.
-        var errorClass = "class='red lighten-4'";
+        var errorIcon = "<i class='material-icons'>error_outline</i>";
+        var warningIcon = "<i class='material-icons'>warning</i>";
+        var criticalIcon = "<i class='material-icons'>error</i>";
         for (var client in data) {
 
           var currentclientName = Object.keys(data)[clientid];
           var currentclient = data[client];
 
-          var row = $("<tr />");
+          var row = $("<tr class='grey lighten-3' />");
           $("#logstable").append(row);
-          row.append($("<td>" + currentclientName + "</td>"));
+          row.append($("<td> <strong>" + currentclientName + "</strong></td>"));
           row.append($("<td></td>"));
           row.append($("<td></td>"));
           row.append($("<td></td>"));
@@ -99,10 +101,10 @@
             var currentserver = currentclient[server];
             var logs = currentserver.logs;
 
-            var row = $("<tr />");
+            var row = $("<tr class='grey lighten-4' />");
             $("#logstable").append(row);
             row.append($("<td></td>"));
-            row.append($("<td>" + currentserverName + "</td>"));
+            row.append($("<td> <strong>" + currentserverName + "</strong></td>"));
             row.append($("<td></td>"));
             row.append($("<td></td>"));
             row.append($("<td></td>"));
@@ -123,16 +125,18 @@
                 for (var log in currentType) {
                   var eventName = Object.keys(currentType)[logID];
                   var eventCount = currentType[log];
+                  var currentIcon;
                   if (currentTypeName == "Critical") {
-                    var row = $("<tr class='red lighten-4' />");
+                    currentIcon = criticalIcon;
                   } else if (currentTypeName == "Error"){
-                    var row = $("<tr class='orange lighten-2' />");
+                    currentIcon = errorIcon;
                   } else {
-                    var row = $("<tr class='yellow lighten-2' />");
+                    currentIcon = warningIcon;
                   }
+                  var row = $("<tr />");
                   $("#logstable").append(row);
                   row.append($("<td></td>"));
-                  row.append($("<td></td>"));
+                  row.append($("<td align='right'>" + currentIcon + "</td>"));
                   row.append($("<td>" + eventName + "</td>"));
                   row.append($("<td>" + eventCount + "</td>"));
                   row.append($("<td>" + currentSourceName + "</td>"));
