@@ -17,6 +17,7 @@
 
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
+  <script src="js/moment.js"></script>
   <script src="js/init.js"></script>
 
 
@@ -55,7 +56,7 @@
           <th>Backup Time</th>
           <th>Backup Copies Available</th>
         </thead>
-      </table> 
+      </table>
 
       <div class="progress loader">
         <div class="indeterminate"></div>
@@ -96,20 +97,33 @@
             var resultMessage = "Successful";
             var rowClass = "class='light-green lighten-4'";
             var icon = 'done';
+            var relTime = "";
+            var todayTime = moment();
 
-            if (currentserver.BackupResult != 0) {
+            if (moment(currentserver.LastBackupTime, "D/MM/YYYY h:m A").isValid()) {
+                var relTime = " (" + moment(currentserver.LastBackupTime, "D/MM/YYYY h:m A").fromNow() + ")";
+            }
+
+            if (currentserver.BackupResult != 0) { // If backup failed on server
               resultMessage = "Error: " + currentserver.BackupResult;
               rowClass = "class='red lighten-4'";
               alert++;
               icon = 'error_outline';
             }
+            else if (todayTime.diff(moment(currentserver.LastBackupTime, "D/MM/YYYY h:m A"), "hours") > 24) { // If backup is older than 24 hours
+                resultMessage = "Backup older than 24 hours";
+                rowClass = "class='red lighten-4'";
+                alert++;
+                icon = 'error_outline';
+            }
+
             //Create row and add data to it.
             var row = $("<tr " + rowClass + " />");
             $("#dataTable").append(row);
             row.append($("<td>" + "<i class='small material-icons'>" + icon + "</i>" + "</td>"));
             row.append($("<td>" + currentserverName + "</td>"));
             row.append($("<td>" + resultMessage + "</td>"));
-            row.append($("<td>" + currentserver.LastBackupTime + "</td>"));
+            row.append($("<td>" + currentserver.LastBackupTime + relTime + "</td>"));
             row.append($("<td>" + currentserver.NumberOfCopies + "</td>"));
 
             serverid++;
