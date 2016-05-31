@@ -53,9 +53,23 @@
       <div id="columns"></div>
 
       <script>
+
+      var json = (function () {
+        var json = null;
+        $.ajax({
+        'async': false,
+        'global': false,
+        'url': "https://boiling-fire-537.firebaseio.com/servers.json",
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
+      });
+      return json;
+      })(); 
+      
       $(document).ready(function() {
-      var json = [{"col1":"row1", "col2":"row1", "col3":"row1"}, {"col1":"row2", "col2":"row2", "col3":"row2"}]; 
-      $('#columns').columns({data:json});
+        $('#columns').columns({data:json});
       });
       </script>
 
