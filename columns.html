@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Backup Status</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+
+
+  <!-- Firebase JS -->
+  <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/moment.js"></script>
+  <script src="js/init.js"></script>
+
+
+  <script src="js/jquery.columns.min.js"></script>
+  <link rel="stylesheet" href="css/cstyle.css">
+
+</head>
+
+
+<body>
+  <nav style="background-color: #96BC33;" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Server Dashboard</a>
+      <ul class="right hide-on-med-and-down">
+        <li class="active"><a href="#">Backup</a></li>
+        <li><a href="blacklist.html">Blacklist</a></li>
+        <li><a href="logs.html">Logs</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li class="active"><a href="#">Backup</a></li>
+        <li><a href="blacklist.html">Blacklist</a></li>
+        <li><a href="logs.html">Logs</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+
+      <h4>Backup Status</h4>
+
+      <div id="columns"></div>
+
+      <script>
+      $(document).ready(function() {
+      var json = [{"col1":"row1", "col2":"row1", "col3":"row1"}, {"col1":"row2", "col2":"row2", "col3":"row2"}]; 
+      $('#columns').columns({data:json});
+      });
+      </script>
+
+
+</div>
+</div>
+
+
+
+
+
+<!--  Scripts-->
+
+
+</body>
+</html>
