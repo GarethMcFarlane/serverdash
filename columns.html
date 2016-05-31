@@ -53,24 +53,18 @@
       <div id="columns"></div>
 
       <script>
+      $.ajax({
+      url:'https://boiling-fire-537.firebaseio.com/servers/BRSL/BRSLSV005.json',
+      dataType: 'json', 
+      success: function(json) { 
+          var arr = [];
+          arr[0] = json;
 
-      var json = (function () {
-        var json = null;
-        $.ajax({
-        'async': false,
-        'global': false,
-        'url': "https://boiling-fire-537.firebaseio.com/servers.json",
-        'dataType': "json",
-        'success': function (data) {
-            json = data;
-        }
-      });
-      return json;
-      })(); 
-      
-      $(document).ready(function() {
-        $('#columns').columns({data:json});
-      });
+          example4 = $('#columns').columns({
+              data:arr
+          }); 
+      }
+  });
       </script>
 
 
