@@ -112,6 +112,7 @@
 
             //Loop through every log and output it.
             var sourceID = 0;
+            var criticalCount = 0;
             for (var source in logs) {
               var currentSourceName = Object.keys(logs)[sourceID];
               var currentSource = logs[source];
@@ -128,6 +129,7 @@
                   var currentIcon;
                   if (currentTypeName == "Critical") {
                     currentIcon = criticalIcon;
+                    criticalCount++;
                   } else if (currentTypeName == "Error"){
                     currentIcon = errorIcon;
                   } else {
@@ -151,6 +153,12 @@
             serverid++;
           }
           clientid++;
+        }
+
+        if (criticalCount > 0) {
+          Materialize.toast('Warning: ' + criticalCount + ' Critical Errors!', 4000);
+        } else {
+          Materialize.toast('No Critical Errors', 4000);
         }
       });
 
